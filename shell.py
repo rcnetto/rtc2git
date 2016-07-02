@@ -2,6 +2,7 @@ import sys
 from subprocess import call, check_output, CalledProcessError
 
 import shouter
+import shlex
 
 logcommands = False
 encoding = None
@@ -35,15 +36,9 @@ def getoutput(command, stripped=True):
         return lines
 
 
-def quote(stringtoquote):
-    stringtoquote = stringtoquote.replace('\"', "'")  # replace " with '
-    quotedstring = '\"' + stringtoquote + '\"'
-    return quotedstring
-
-
 def shout_command_to_log(command, outputfile=None):
     if logcommands:
-        logmessage = "Executed Command: " + quote(command)
+        logmessage = "Executed Command: " + shlex.quote(command)
         if outputfile:
             shouter.shout(logmessage + " --> " + outputfile)
         else:

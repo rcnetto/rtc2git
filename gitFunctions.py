@@ -1,4 +1,5 @@
 import os
+import shlex
 from datetime import datetime
 import re
 
@@ -31,7 +32,7 @@ class Initializer:
                         ignore.write('/' + directory + newline)
                     ignore.write(newline)
             shell.execute("git add " + git_ignore)
-            shell.execute("git commit -m %s -q" % shell.quote("Add .gitignore"))
+            shell.execute("git commit -m %s -q" % shlex.quote("Add .gitignore"))
 
     @staticmethod
     def createattributes():
@@ -47,7 +48,7 @@ class Initializer:
                     for line in config.gitattributes:
                         attributes.write(line + newline)
                 shell.execute("git add " + gitattribues)
-                shell.execute("git commit -m %s -q" % shell.quote("Add .gitattributes"))
+                shell.execute("git commit -m %s -q" % shlex.quote("Add .gitattributes"))
 
     def initalize(self):
         self.createrepo()
@@ -76,7 +77,7 @@ class Initializer:
         shouter.shout("Initial git add")
         shell.execute("git add -A", os.devnull)
         shouter.shout("Finished initial git add, starting commit")
-        shell.execute("git commit -m %s -q" % shell.quote("Initial Commit"))
+        shell.execute("git commit -m %s -q" % shlex.quote("Initial Commit"))
         shouter.shout("Finished initial commit")
 
 
@@ -123,7 +124,7 @@ class Commiter:
     def getcommitcommand(changeentry):
         comment = Commiter.getcommentwithprefix(changeentry.comment)
         return "git commit -m %s --date %s --author=%s" \
-               % (shell.quote(comment), shell.quote(changeentry.date), changeentry.getgitauthor())
+               % (shlex.quote(comment), shlex.quote(changeentry.date), changeentry.getgitauthor())
 
     @staticmethod
     def getcommentwithprefix(comment):
@@ -135,7 +136,7 @@ class Commiter:
 
     @staticmethod
     def replaceauthor(author, email):
-        shell.execute("git config --replace-all user.name " + shell.quote(author))
+        shell.execute("git config --replace-all user.name " + shlex.quote(author))
         shell.execute("git config --replace-all user.email " + email)
 
     @staticmethod
