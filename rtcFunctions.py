@@ -1,6 +1,7 @@
 import sys
 import os
 import re
+import shlex
 from enum import Enum, unique
 
 import configuration
@@ -93,7 +94,7 @@ class WorkspaceHandler:
 
 
 class Changes:
-    
+
     latest_accept_command = ""
 
     @staticmethod
@@ -420,7 +421,7 @@ class ChangeEntry:
 
     def getgitauthor(self):
         authorrepresentation = "%s <%s>" % (self.author, self.email)
-        return shell.quote(authorrepresentation)
+        return shlex.quote(authorrepresentation)
 
     def setAccepted(self):
         self.accepted = True
